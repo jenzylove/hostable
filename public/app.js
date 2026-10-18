@@ -16,7 +16,10 @@
     var opt = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
     var res;
     try { res = await fetch(path, opt); }
-    catch (e) { throw new Error('Could not reach the server (' + path + ').'); }
+    catch (e) {
+      try { await new Promise(function (r) { setTimeout(r, 1200); }); res = await fetch(path, opt); }
+      catch (e2) { throw new Error('The connection dropped before an answer came back. Please try again.'); }
+    }
     var data = null, txt = '';
     try { txt = await res.text(); data = txt ? JSON.parse(txt) : null; } catch (e) { data = null; }
     if (!res.ok) {
