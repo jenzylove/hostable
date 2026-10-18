@@ -37,6 +37,7 @@ test('no admission loses everyone', () => {
 
 test('summary keeps pct', () => {
   const s = summarise({ id: 'c' }, [{ count: 100, expectedLost: 25, unknownRisk: 0 }, { count: 100, expectedLost: 0, unknownRisk: 10 }]);
-  assert.equal(s.keepsPct, 87.5);
+  assert.equal(s.keepsPct, 82.5);
+  assert.equal(s.upToPct, 87.5);
   assert.equal(s.unknownRisk, 10);
 });
