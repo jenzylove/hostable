@@ -5,3 +5,6 @@ data/raw/*.pdf
 data/raw/*.xlsx
 *.log
 data/raw
+
+.vercel
+.env*
