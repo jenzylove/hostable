@@ -1,16 +1,30 @@
 <div align="center">
 
+<img src="docs/media/brand/mark.svg" width="84" alt="Hostable">
+
 # Hostable
 
-**Pick the city your people can actually reach.**
+**Pick the host city your people can actually reach.**
 
-Before you book a venue, Hostable scores every candidate host city by how many of your own community can get in, using official visa refusal rates and real entry rules, and shows who you lose and why.
+Before you book a venue, Hostable scores every candidate city by how many of your community can get in, using official visa refusal rates, real entry rules and legal flight routes, all in a FalkorDB graph.
 
-[**Live app**](https://hostable-umber.vercel.app) · [**Demo video**](https://youtu.be/LSHR5l9eWs0) · Built on **FalkorDB** for Graph Hacks: Context for AI Agents (WeMakeDevs × FalkorDB)
-
-![FalkorDB](https://img.shields.io/badge/graph-FalkorDB%20Cloud-ff5a1f) ![Tracks](https://img.shields.io/badge/tracks-Company%20Brain%20%C2%B7%20Agents%20That%20Act-1b1a17) ![License](https://img.shields.io/badge/license-MIT-1b1a17)
+[![Live](https://img.shields.io/badge/live-hostable--umber.vercel.app-ff5a1f)](https://hostable-umber.vercel.app) [![Demo video](https://img.shields.io/badge/demo-YouTube-131210)](https://youtu.be/LSHR5l9eWs0) [![FalkorDB](https://img.shields.io/badge/graph-FalkorDB%20Cloud-ff5a1f)](https://www.falkordb.com) [![Built for](https://img.shields.io/badge/built%20for-Graph%20Hacks%202026-131210)](https://www.wemakedevs.org/hackathons/falkordb) [![License](https://img.shields.io/badge/license-MIT-131210)](LICENSE)
 
 </div>
+
+![Hostable](docs/media/hero.png)
+
+## Start here
+
+| | |
+|---|---|
+| **Live app** | https://hostable-umber.vercel.app |
+| **Demo video** | https://youtu.be/LSHR5l9eWs0 |
+| **Try it in 2 minutes** | [Judge fast path](#judge-fast-path-2-minutes-no-sign-up) |
+| **The Cypher it runs on** | [Queries and algorithms](#the-cypher-the-product-depends-on) |
+| **Graph data model** | [How it works](#how-it-works) |
+| **Data sources** | [Data](#data-all-public-all-sourced) |
+| **Security** | [SECURITY.md](SECURITY.md) |
 
 ---
 
@@ -33,6 +47,8 @@ Every one of those decisions was made by hand, after the losses. Hostable makes 
 4. Move **Members holding a US visa** up and rescore: cities that admit US visa holders (Mexico City, Tbilisi) climb.
 5. In **Ask the agent**, ask "Lisbon or Dubai for our people?". The agent answers from graph tools only; open the tool calls to see every Cypher query it ran.
 6. **Proof** lists every query behind the last score and every data source.
+
+![The departure board](docs/media/board.png)
 
 ## How it works
 
