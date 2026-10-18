@@ -4,103 +4,162 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hostable</title>
-<meta name="description" content="Score every candidate host city by how many of your community can actually get in.">
+<meta name="description" content="Pick the host city your people can actually reach. Hostable scores candidate cities by how many of your community can get in.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="premium.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231b1a17%22/%3E%3Ctext x=%2216%22 y=%2223%22 font-size=%2218%22 font-family=%22monospace%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22%23ff5a1f%22%3EH%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 <header class="top">
   <a class="wordmark" href="#top">Hostable</a>
-  <nav><a href="#score">Score</a><a href="#ask">Ask</a><a href="#proof">Proof</a></nav>
+  <nav><a href="#how">How it works</a><a href="#score">Score</a><a href="#ask">Agent</a><a href="#proof">Data</a><a class="nav-cta" href="#workspace">Score your cities</a></nav>
 </header>
 
-<main id="top">
-<section class="hero">
-  <p class="eyebrow">Host city selection</p>
-  <h1>Pick the city your people can actually reach.</h1>
-  <p class="sub">Hostable scores every candidate host city by how many of your community can get in, using official refusal rates and real entry rules, and shows who you lose and why.</p>
-
-  <form id="inputs" class="inputs" autocomplete="off">
-    <div class="field">
-      <div class="field-head">
-        <h2>Your community</h2>
-        <label class="preset">Start from
-          <select id="preset"><option value="">Loading presets</option></select>
-        </label>
-      </div>
-      <div id="rows" class="rows"></div>
-      <div class="row-actions">
-        <button type="button" class="link" id="addRow">+ Add a country</button>
-        <button type="button" class="link" id="toggleCsv">Paste CSV</button>
-      </div>
-      <div id="csvBox" class="csv" hidden>
-        <textarea id="csv" rows="5" placeholder="NGA, 40&#10;India, 25&#10;BRA, 12"></textarea>
-        <div class="row-actions"><button type="button" class="link" id="applyCsv">Use this list</button><span id="csvMsg" class="msg"></span></div>
-      </div>
-      <p class="note">Only country counts. No names, no passports, nothing personal.</p>
+<section class="hero-dark" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow">For event organizers and global communities</p>
+    <h1 class="serif">Pick the city your people can <em>actually reach.</em></h1>
+    <p class="lede">Before you sign a venue, Hostable shows how many of your community can get into each candidate city, who you would lose at the border, and why. Built on official visa statistics and real entry rules.</p>
+    <div class="cta-row"><a class="btn-primary" href="#workspace">Score your cities</a><a class="btn-ghost" href="#how">See how it works</a></div>
+    <div class="facts">
+      <div><strong>100+</strong><span>attendees refused visas for NeurIPS 2018 in Montreal</span></div>
+      <div><strong>45.9%</strong><span>of Schengen visa applications made in Nigeria refused in 2024 (EU Commission)</span></div>
+      <div><strong>26% to ~50%</strong><span>African share of IAS attendees after it moved from Australia to Kigali</span></div>
     </div>
-
-    <div class="field">
-      <div class="field-head"><h2>Candidate cities</h2><span class="muted" id="cityCount"></span></div>
-      <div id="chips" class="chips"><span class="muted">Loading cities</span></div>
-    </div>
-
-    <div class="field sliders">
-      <div class="slider">
-        <label for="us">Members holding a US visa <output id="usOut">0%</output></label>
-        <input type="range" id="us" min="0" max="100" value="0">
-      </div>
-      <div class="slider">
-        <label for="sch">Members holding a Schengen visa <output id="schOut">0%</output></label>
-        <input type="range" id="sch" min="0" max="100" value="0">
-      </div>
-      <p class="note">Some countries admit holders of these visas.</p>
-    </div>
-
-    <div id="metaErr" class="error" role="alert" hidden></div>
-    <button type="submit" class="go" id="go">Score cities</button>
-  </form>
+  </div>
 </section>
 
-<section id="score" class="results">
-  <div id="boardWrap" class="board-wrap" hidden>
-    <div class="board-title"><span>Departures</span><span id="boardSub"></span></div>
-    <div class="board-head" aria-hidden="true"><span>#</span><span>City</span><span>Country</span><span>Keeps</span><span>Lost</span><span>Unknown</span></div>
-    <div id="board" class="board"></div>
-    <p class="board-foot">Lost is the expected number of members refused or unable to travel. Unknown is members whose outcome we could not rate. Tap a row to see who you lose.</p>
+<main>
+<section class="band" id="why">
+  <p class="kicker">The problem</p>
+  <p class="statement serif">Global events don't have a venue problem. They have a visa problem they discover <em>after</em> the venue is booked. The people refused at the border never show up in the attendance numbers.</p>
+</section>
+
+<section class="how" id="how">
+  <p class="kicker">How it works</p>
+  <h2 class="serif h2">One graph, every border your community crosses.</h2>
+  <div class="chain" aria-label="The chain Hostable walks for every member">
+    <div class="node"><span>01</span><b>Nationality</b><i>your community, as country counts</i></div>
+    <div class="link"></div>
+    <div class="node"><span>02</span><b>Entry rule</b><i>visa free, online visa, or consular visa, 199 passports</i></div>
+    <div class="link"></div>
+    <div class="node"><span>03</span><b>Refusal rate</b><i>at that country's own consulates, EU 2024 and US FY2024</i></div>
+    <div class="link"></div>
+    <div class="node"><span>04</span><b>Transit hub</b><i>a legal flight connection, airport transit visa rules applied</i></div>
+    <div class="link"></div>
+    <div class="node accent"><span>05</span><b>Host city</b><i>who gets in, who is lost, and why</i></div>
   </div>
-  <div id="scoreStatus" class="status" role="status" aria-live="polite"></div>
+  <div class="how-grid">
+    <div><h3 class="h3">Graph native</h3><p>Whether someone can attend is a chain, not a lookup. Hostable stores entry rules, refusal rates, visa unlocks and flight routes as a FalkorDB graph and walks every nationality to every city in one traversal per city.</p></div>
+    <div><h3 class="h3">Honest numbers</h3><p><b>Keeps</b> counts only people who can be shown to get in. <b>Lost</b> is people needing a visa times the published refusal rate. Where no rate is published, they are <b>unknown</b>, never counted as kept.</p></div>
+    <div><h3 class="h3">An agent that shows its work</h3><p>Ask in plain words. The agent answers only from graph tools, saves its recommendation to your community's decision log, and shows every query it ran.</p></div>
+  </div>
+</section>
+
+<section class="workspace" id="workspace">
+  <div class="ws-head">
+    <p class="kicker">Workspace</p>
+    <h2 class="serif h2">Score your candidate cities.</h2>
+    <p class="muted">Only country counts. No names, no passports, nothing personal.</p>
+  </div>
+  <div class="ws-grid">
+    <form id="inputs" class="panel" autocomplete="off">
+      <div class="field">
+        <div class="field-head">
+          <h3 class="label">Your community</h3>
+          <select id="preset" aria-label="Start from a sample"><option value="">Loading presets</option></select>
+        </div>
+        <div id="rows" class="rows scroll"></div>
+        <div class="row-actions">
+          <button type="button" class="link" id="addRow">+ Add a country</button>
+          <button type="button" class="link" id="toggleCsv">Paste a list</button>
+        </div>
+        <div id="csvBox" class="csv" hidden>
+          <textarea id="csv" rows="4" placeholder="NGA, 40&#10;India, 25&#10;BRA, 12"></textarea>
+          <div class="row-actions"><button type="button" class="link" id="applyCsv">Use this list</button><span id="csvMsg" class="msg"></span></div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-head"><h3 class="label">Candidate cities</h3><span class="muted small" id="cityCount"></span></div>
+        <div id="chips" class="chips"><span class="muted">Loading cities</span></div>
+      </div>
+      <div class="field sliders">
+        <h3 class="label">Visas your members already hold</h3>
+        <div class="slider"><label for="us">US visa <output id="usOut">0%</output></label><input type="range" id="us" min="0" max="100" value="0"></div>
+        <div class="slider"><label for="sch">Schengen visa <output id="schOut">0%</output></label><input type="range" id="sch" min="0" max="100" value="0"></div>
+        <p class="note">Mexico and Georgia admit holders of these visas.</p>
+      </div>
+      <div id="metaErr" class="error" role="alert" hidden></div>
+      <button type="submit" class="go" id="go">Score cities</button>
+    </form>
+
+    <div class="results" id="score">
+      <div class="empty" id="emptyBoard">
+        <p class="serif">Your departure board appears here.</p>
+        <p class="muted small">Cities ranked by the share of your community that can be shown to get in. Tap a city to see who you lose and why.</p>
+      </div>
+      <div id="boardWrap" class="board-wrap" hidden>
+        <div class="board-title"><span>Departures</span><span id="boardSub"></span></div>
+        <div class="board-head" aria-hidden="true"><span>#</span><span>City</span><span>Country</span><span>Keeps</span><span>Lost</span><span>Unknown</span></div>
+        <div id="board" class="board"></div>
+        <p class="board-foot">Lost is the expected number refused or unable to travel. Unknown is members whose outcome has no published rate. Tap a row to see who you lose.</p>
+      </div>
+      <div id="scoreStatus" class="status" role="status" aria-live="polite"></div>
+    </div>
+  </div>
 </section>
 
 <section id="ask" class="ask">
-  <h2 class="sec">Ask the agent</h2>
-  <p class="sub small">Questions are answered by querying the graph, not from memory.</p>
-  <form id="askForm" class="askform">
-    <input type="text" id="q" placeholder="Which city keeps the most of our people?" aria-label="Your question">
-    <button type="submit" class="go small" id="askBtn">Ask</button>
-  </form>
-  <div class="chips" id="suggest">
-    <button type="button" class="chip">Lisbon or Dubai for our people?</button>
-    <button type="button" class="chip">Who do we lose in Berlin and why?</button>
-    <button type="button" class="chip">Which city keeps the most of our African members?</button>
+  <div class="ask-copy">
+    <p class="kicker">Agent</p>
+    <h2 class="serif h2">Ask before you book.</h2>
+    <p class="muted">Answers come from graph queries, not memory. Recommendations are saved to your community's decision log.</p>
   </div>
-  <div id="answer" class="answer" aria-live="polite"></div>
+  <div class="console">
+    <form id="askForm" class="askform">
+      <input type="text" id="q" placeholder="Which city keeps the most of our people?" aria-label="Your question">
+      <button type="submit" class="go small" id="askBtn">Ask</button>
+    </form>
+    <div class="chips" id="suggest">
+      <button type="button" class="chip">Lisbon or Dubai for our people?</button>
+      <button type="button" class="chip">Who do we lose in Berlin and why?</button>
+      <button type="button" class="chip">Which city keeps the most of our African members?</button>
+    </div>
+    <div id="answer" class="answer" aria-live="polite"></div>
+  </div>
 </section>
 
 <section id="proof" class="proof">
-  <h2 class="sec">Every number traces to a query and a source.</h2>
-  <div id="queries" class="queries"><p class="muted">Run a score to see the queries behind it.</p></div>
-  <h3>Data sources</h3>
-  <ul id="sources" class="sources"><li class="muted">Loading sources</li></ul>
+  <p class="kicker">Data and proof</p>
+  <h2 class="serif h2">Every number traces to a query and a source.</h2>
+  <div class="proof-grid">
+    <div>
+      <h3 class="label">Sources</h3>
+      <ul id="sources" class="sources"><li class="muted">Loading sources</li></ul>
+      <p class="muted small">Refusal rates are published for Schengen and the US. Other visa countries show as unknown. EU figures are by country where people apply, the EU's own measure.</p>
+    </div>
+    <details class="qdetails">
+      <summary>Queries behind your last score</summary>
+      <div id="queries" class="queries"><p class="muted">Run a score to see the Cypher queries behind it.</p></div>
+    </details>
+  </div>
 </section>
 </main>
 
-<footer>
-  <span>Built on FalkorDB for Graph Hacks 2026.</span>
-  <a href="#proof">Sources</a>
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="wordmark" href="#top">Hostable</a>
+      <p>Pick the city your people can actually reach. Visa refusal rates, entry rules and routes, in one graph.</p>
+    </div>
+    <div><h4>Product</h4><a href="#how">How it works</a><a href="#workspace">Score cities</a><a href="#ask">Ask the agent</a></div>
+    <div><h4>Data</h4><a href="https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/short-stay-visas-issued-schengen-countries_en" rel="noopener" target="_blank">EU visa statistics</a><a href="https://travel.state.gov/content/travel/en/legal/visa-law0/visa-statistics/nonimmigrant-visa-statistics.html" rel="noopener" target="_blank">US refusal rates</a><a href="https://github.com/ilyankou/passport-index-dataset" rel="noopener" target="_blank">Passport Index</a></div>
+    <div><h4>Built with</h4><a href="https://www.falkordb.com" rel="noopener" target="_blank">FalkorDB</a><a href="https://github.com/jenzylove/hostable" rel="noopener" target="_blank">Source on GitHub</a><span>Graph Hacks 2026</span></div>
+  </div>
+  <p class="foot-note">Hostable gives expected numbers from published statistics, not guarantees. Individual decisions vary. Only country counts are entered; nothing personal is stored.</p>
 </footer>
 <script src="app.js"></script>
 </body>

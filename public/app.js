@@ -180,7 +180,7 @@
     data.results.forEach(function (r, i) {
       var d = i * 220;
       var btn = el('button', 'brow'); btn.type = 'button'; btn.setAttribute('aria-expanded', 'false');
-      var keeps = el('span', 'keeps'); keeps.appendChild(flapText('Keeps ' + num(r.keepsPct, 0) + '%', d));
+      var keeps = el('span', 'keeps'); keeps.appendChild(flapText(num(r.keepsPct, 0) + '%', d));
       btn.append(
         flapText(String(i + 1), d),
         flapText(r.city.name, d),
