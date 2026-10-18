@@ -6,7 +6,7 @@
 
 Before you book a venue, Hostable scores every candidate host city by how many of your own community can get in, using official visa refusal rates and real entry rules, and shows who you lose and why.
 
-[**Live app**](https://hostable-umber.vercel.app) · Built on **FalkorDB** for Graph Hacks: Context for AI Agents (WeMakeDevs × FalkorDB)
+[**Live app**](https://hostable-umber.vercel.app) · [**Demo video**](https://youtu.be/LSHR5l9eWs0) · Built on **FalkorDB** for Graph Hacks: Context for AI Agents (WeMakeDevs × FalkorDB)
 
 ![FalkorDB](https://img.shields.io/badge/graph-FalkorDB%20Cloud-ff5a1f) ![Tracks](https://img.shields.io/badge/tracks-Company%20Brain%20%C2%B7%20Agents%20That%20Act-1b1a17) ![License](https://img.shields.io/badge/license-MIT-1b1a17)
 
