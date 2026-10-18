@@ -79,7 +79,7 @@ RETURN n.iso3 AS iso3, n.name AS name, m.count AS count, n.iso3 = d.iso3 AS home
        collect(DISTINCT {visa: v.id, only: u.only}) AS unlocks
 ```
 
-**2. Legal connection search**: a direct flight, or one stop at a hub this nationality may transit (Schengen airport transit visa list applied, US, UK and Canada hubs need entry eligibility):
+**2. Legal route search with `algo.SPpaths`**: FalkorDB's shortest paths algorithm returns up to six shortest flight paths (up to three legs) from each nationality's main airport. Every hub on each path is checked against the transit rules (EU airport transit visa list; US, UK and Canada hubs need entry eligibility) and the shortest legal path wins. Example: for Nigerians to Tbilisi the shortest path LOS → CDG → TBS is blocked (Paris needs an airport transit visa), so Hostable routes LOS → IST → TBS. See `lib/score.js` for the live query.
 
 ```cypher
 MATCH (city:City {id:$city})-[:SERVED_BY]->(t:Airport), (city)-[:IN]->(d:Country)
@@ -101,7 +101,11 @@ WITH iso, o.iata AS origin, t.iata AS dest, o = t AS same, dir IS NOT NULL AS di
 RETURN iso, origin, dest, same, direct, hubs[0..3] AS hubs
 ```
 
-**3. Agent tools**: `explain_path` returns the entry edge, the refusal edges with their sources and the unlock edges for one nationality and city; `remember_decision` writes `(:Community)-[:DECIDED]->(:Decision)-[:FOR]->(:City)`; `past_decisions` reads them back so a community's choices and reasons persist across sessions.
+**3. `algo.pageRank`**: the `hub_rank` agent tool ranks the hubs that feed a host city by PageRank over the route network.
+
+**4. Organization workspaces**: `(:Org)-[:MEMBERS {count}]->(:Country)`, `(:Org)-[:RAN]->(:Run)`, `(:Org)-[:DECIDED]->(:Decision)-[:FOR]->(:City)`. An organization creates a private workspace (secret key shown once, only its hash stored); every score and agent decision is saved to its part of the graph.
+
+**5. Agent tools** (`score_cities`, `explain_path`, `what_if`, `hub_rank`, `org_history`, `remember_decision`, `past_decisions`): `explain_path` returns the entry edge, the refusal edges with their sources and the unlock edges for one nationality and city; `remember_decision` writes `(:Community)-[:DECIDED]->(:Decision)-[:FOR]->(:City)`; `past_decisions` reads them back so a community's choices and reasons persist across sessions.
 
 The live app shows the exact queries and their timings for every score under **Data and proof**.
 
