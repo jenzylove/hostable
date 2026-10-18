@@ -59,6 +59,52 @@ The agent (Track 01) decides with four graph tools: `score_cities`, `explain_pat
 
 **Why only on a graph:** whether a person can attend is a chain (nationality, entry rule, refusal rate at that consulate, transit hub rule, a visa they already hold, the city), summed across a whole community for every city. In FalkorDB that is one traversal per city, and every number on screen maps back to a path you can inspect.
 
+## The Cypher the product depends on
+
+All scoring runs in FalkorDB. Remove the graph and nothing on the board can be computed. Full source: [`lib/score.js`](lib/score.js), [`lib/agent.js`](lib/agent.js), loader [`scripts/load.mjs`](scripts/load.mjs).
+
+**1. Entry and refusal, one traversal per city** (every nationality in the community to the city's country):
+
+```cypher
+MATCH (city:City {id:$city})-[:IN]->(d:Country)
+UNWIND $members AS m
+MATCH (n:Country {iso3:m.iso3})
+OPTIONAL MATCH (n)-[e:ENTRY]->(d)
+OPTIONAL MATCH (d)-[:MEMBER_OF]->(reg:Regime)
+OPTIONAL MATCH (n)-[sr:SCHENGEN_REFUSAL]->(d)
+OPTIONAL MATCH (n)-[rr:REFUSED_BY]->(reg)
+OPTIONAL MATCH (v:Regime)-[u:UNLOCKS]->(d)
+RETURN n.iso3 AS iso3, n.name AS name, m.count AS count, n.iso3 = d.iso3 AS home, e.req AS req,
+       reg.id AS regime, sr.rate AS stateRate, rr.rate AS regimeRate,
+       collect(DISTINCT {visa: v.id, only: u.only}) AS unlocks
+```
+
+**2. Legal connection search**: a direct flight, or one stop at a hub this nationality may transit (Schengen airport transit visa list applied, US, UK and Canada hubs need entry eligibility):
+
+```cypher
+MATCH (city:City {id:$city})-[:SERVED_BY]->(t:Airport), (city)-[:IN]->(d:Country)
+UNWIND $isos AS iso
+MATCH (n:Country {iso3:iso})-[:MAIN_AIRPORT]->(o:Airport)
+OPTIONAL MATCH (o)-[dir:FLIES_TO]->(t)
+OPTIONAL MATCH (o)-[:FLIES_TO]->(h:Airport)-[:FLIES_TO]->(t)
+OPTIONAL MATCH (h)-[:IN]->(hc:Country)
+OPTIONAL MATCH (n)-[he:ENTRY]->(hc)
+OPTIONAL MATCH (n)-[atv:NEEDS_TRANSIT_VISA]->(:Regime {id:'SCHENGEN'})
+WITH iso, o, t, d, dir, h, hc, he, atv
+WITH iso, o.iata AS origin, t.iata AS dest, o = t AS same, dir IS NOT NULL AS direct,
+  collect(CASE WHEN h IS NULL THEN NULL
+    WHEN hc.iso3 = iso OR hc.iso3 = d.iso3 THEN h.iata
+    WHEN hc.schengen AND (d.schengen OR atv IS NULL) THEN h.iata
+    WHEN hc.iso3 IN ['USA','CAN','GBR'] AND NOT he.req IN ['visa required','no admission'] THEN h.iata
+    WHEN NOT hc.schengen AND NOT hc.iso3 IN ['USA','CAN','GBR'] THEN h.iata
+    ELSE NULL END) AS hubs
+RETURN iso, origin, dest, same, direct, hubs[0..3] AS hubs
+```
+
+**3. Agent tools**: `explain_path` returns the entry edge, the refusal edges with their sources and the unlock edges for one nationality and city; `remember_decision` writes `(:Community)-[:DECIDED]->(:Decision)-[:FOR]->(:City)`; `past_decisions` reads them back so a community's choices and reasons persist across sessions.
+
+The live app shows the exact queries and their timings for every score under **Data and proof**.
+
 ## Data (all public, all sourced)
 
 | Data | Source |
@@ -88,6 +134,15 @@ node --env-file=.env scripts/load.mjs
 node --test test/
 npx vercel dev
 ```
+
+## Tracks
+
+- **Company Brain**: the community, its nationalities, candidate cities and the decisions made about them live in one graph, and the agent answers and acts across all of it.
+- **Agents That Act on Connected Data**: the agent decides from multi hop graph queries and records its decision, with every step traceable.
+
+## How this was built
+
+Built during Graph Hacks (Oct 15 to 18, 2026). AI coding assistants were used for parts of the code and UI; the idea, the graph model, the data sourcing and every number were designed and checked by the author.
 
 ## License
 
