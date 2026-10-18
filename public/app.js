@@ -184,7 +184,7 @@
       btn.append(
         flapText(String(i + 1), d),
         flapText(r.city.name, d),
-        flapText(r.city.country, d),
+        flapText(r.city.iso3, d),
         keeps,
         flapText(num(r.expectedLost, 1), d),
         flapText(String(r.unknownRisk == null ? '?' : num(r.unknownRisk, 0)), d)
