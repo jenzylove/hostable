@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hostable</title>
+<meta name="description" content="Score every candidate host city by how many of your community can actually get in.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <a class="wordmark" href="#top">Hostable</a>
+  <nav><a href="#score">Score</a><a href="#ask">Ask</a><a href="#proof">Proof</a></nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <p class="eyebrow">Host city selection</p>
+  <h1>Pick the city your people can actually reach.</h1>
+  <p class="sub">Hostable scores every candidate host city by how many of your community can get in, using official refusal rates and real entry rules, and shows who you lose and why.</p>
+
+  <form id="inputs" class="inputs" autocomplete="off">
+    <div class="field">
+      <div class="field-head">
+        <h2>Your community</h2>
+        <label class="preset">Start from
+          <select id="preset"><option value="">Loading presets</option></select>
+        </label>
+      </div>
+      <div id="rows" class="rows"></div>
+      <div class="row-actions">
+        <button type="button" class="link" id="addRow">+ Add a country</button>
+        <button type="button" class="link" id="toggleCsv">Paste CSV</button>
+      </div>
+      <div id="csvBox" class="csv" hidden>
+        <textarea id="csv" rows="5" placeholder="NGA, 40&#10;India, 25&#10;BRA, 12"></textarea>
+        <div class="row-actions"><button type="button" class="link" id="applyCsv">Use this list</button><span id="csvMsg" class="msg"></span></div>
+      </div>
+      <p class="note">Only country counts. No names, no passports, nothing personal.</p>
+    </div>
+
+    <div class="field">
+      <div class="field-head"><h2>Candidate cities</h2><span class="muted" id="cityCount"></span></div>
+      <div id="chips" class="chips"><span class="muted">Loading cities</span></div>
+    </div>
+
+    <div class="field sliders">
+      <div class="slider">
+        <label for="us">Members holding a US visa <output id="usOut">0%</output></label>
+        <input type="range" id="us" min="0" max="100" value="0">
+      </div>
+      <div class="slider">
+        <label for="sch">Members holding a Schengen visa <output id="schOut">0%</output></label>
+        <input type="range" id="sch" min="0" max="100" value="0">
+      </div>
+      <p class="note">Some countries admit holders of these visas.</p>
+    </div>
+
+    <div id="metaErr" class="error" role="alert" hidden></div>
+    <button type="submit" class="go" id="go">Score cities</button>
+  </form>
+</section>
+
+<section id="score" class="results">
+  <div id="boardWrap" class="board-wrap" hidden>
+    <div class="board-title"><span>Departures</span><span id="boardSub"></span></div>
+    <div class="board-head" aria-hidden="true"><span>#</span><span>City</span><span>Country</span><span>Keeps</span><span>Lost</span><span>Unknown</span></div>
+    <div id="board" class="board"></div>
+    <p class="board-foot">Lost is the expected number of members refused or unable to travel. Unknown is members whose outcome we could not rate. Tap a row to see who you lose.</p>
+  </div>
+  <div id="scoreStatus" class="status" role="status" aria-live="polite"></div>
+</section>
+
+<section id="ask" class="ask">
+  <h2 class="sec">Ask the agent</h2>
+  <p class="sub small">Questions are answered by querying the graph, not from memory.</p>
+  <form id="askForm" class="askform">
+    <input type="text" id="q" placeholder="Which city keeps the most of our people?" aria-label="Your question">
+    <button type="submit" class="go small" id="askBtn">Ask</button>
+  </form>
+  <div class="chips" id="suggest">
+    <button type="button" class="chip">Lisbon or Dubai for our people?</button>
+    <button type="button" class="chip">Who do we lose in Berlin and why?</button>
+    <button type="button" class="chip">Which city keeps the most of our African members?</button>
+  </div>
+  <div id="answer" class="answer" aria-live="polite"></div>
+</section>
+
+<section id="proof" class="proof">
+  <h2 class="sec">Every number traces to a query and a source.</h2>
+  <div id="queries" class="queries"><p class="muted">Run a score to see the queries behind it.</p></div>
+  <h3>Data sources</h3>
+  <ul id="sources" class="sources"><li class="muted">Loading sources</li></ul>
+</section>
+</main>
+
+<footer>
+  <span>Built on FalkorDB for Graph Hacks 2026.</span>
+  <a href="#proof">Sources</a>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

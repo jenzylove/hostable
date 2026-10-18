@@ -1,0 +1,7 @@
+node_modules
+.env*
+.vercel
+data/raw/*.pdf
+data/raw/*.xlsx
+*.log
+data/raw
